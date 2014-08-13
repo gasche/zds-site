@@ -17,30 +17,30 @@ def easy_tag(func):
     return inner
 
 
-
 class AppendGetNode(template.Node):
     def __init__(self, dict):
         self.dict_pairs = {}
         for pair in dict.split(','):
             pair = pair.split('=')
             self.dict_pairs[pair[0]] = template.Variable(pair[1])
-            
+
     def render(self, context):
         get = context['request'].GET.copy()
 
         for key in self.dict_pairs:
             get[key] = self.dict_pairs[key].resolve(context)
-        
+
         path = context['request'].META['PATH_INFO']
-        
+
         if len(get):
             path += "?"
             for (key, value) in get.items():
                 if str(value):
                     for v in value:
                         path += u"&".join(["{0}={1}".format(key, str(v))])
-        
+
         return path
+
 
 @register.tag()
 @easy_tag

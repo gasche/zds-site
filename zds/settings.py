@@ -159,7 +159,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'django.contrib.humanize',
-    
+
     'easy_thumbnails',
     'easy_thumbnails.optimize',
     'south',

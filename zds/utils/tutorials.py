@@ -9,6 +9,7 @@ from git import *
 
 from zds.utils import slugify, misc
 
+
 # Export-to-dict functions
 def export_chapter(chapter, export_all=True):
     from zds.tutorial.models import Extract
@@ -113,10 +114,10 @@ def export_tutorial_to_md(tutorial):
     tuto = OrderedDict()
 
     i = os.path.join(tutorial.get_prod_path(), tutorial.introduction)
-    tuto['intro'] = misc.read_path(i,utf8=False)
+    tuto['intro'] = misc.read_path(i, utf8=False)
 
     c = os.path.join(tutorial.get_prod_path(), tutorial.conclusion)
-    tuto['conclu'] = misc.read_path(c,utf8=False)
+    tuto['conclu'] = misc.read_path(c, utf8=False)
 
     tuto['image'] = tutorial.image
     tuto['title'] = tutorial.title
@@ -140,11 +141,11 @@ def export_tutorial_to_md(tutorial):
             intro = os.path.join(
                 tutorial.get_prod_path(),
                 mandata['introduction'])
-            chapter['intro'] = misc.read_path(intro,utf8=False)
+            chapter['intro'] = misc.read_path(intro, utf8=False)
             conclu = os.path.join(
                     tutorial.get_prod_path(),
                     mandata['conclusion'])
-            chapter['conclu'] = misc.read_path(conclu,utf8=False)
+            chapter['conclu'] = misc.read_path(conclu, utf8=False)
             cpt = 1
             for ext in chapter['extracts']:
                 ext['position_in_chapter'] = cpt
@@ -152,7 +153,7 @@ def export_tutorial_to_md(tutorial):
                 text = os.path.join(
                     tutorial.get_prod_path(),
                     ext['text'])
-                ext['txt'] = misc.read_path(text,utf8=False)
+                ext['txt'] = misc.read_path(text, utf8=False)
                 cpt += 1
         else:
             chapter = None
@@ -167,11 +168,11 @@ def export_tutorial_to_md(tutorial):
             intro = os.path.join(
                     tutorial.get_prod_path(),
                     part['introduction'])
-            part['intro'] = misc.read_path(intro,utf8=False)
+            part['intro'] = misc.read_path(intro, utf8=False)
             conclu = os.path.join(
                 tutorial.get_prod_path(),
                 part['conclusion'])
-            part['conclu'] = misc.read_path(conclu,utf8=False)
+            part['conclu'] = misc.read_path(conclu, utf8=False)
 
             cpt_c = 1
             for chapter in part['chapters']:
@@ -184,11 +185,11 @@ def export_tutorial_to_md(tutorial):
                 intro = os.path.join(
                     tutorial.get_prod_path(),
                     chapter['introduction'])
-                chapter['intro'] = misc.read_path(intro,utf8=False)
+                chapter['intro'] = misc.read_path(intro, utf8=False)
                 conclu = os.path.join(
                     tutorial.get_prod_path(),
                     chapter['conclusion'])
-                chapter['conclu'] = misc.read_path(conclu,utf8=False)
+                chapter['conclu'] = misc.read_path(conclu, utf8=False)
                 cpt_e = 1
                 for ext in chapter['extracts']:
                     ext['chapter'] = chapter
@@ -197,7 +198,7 @@ def export_tutorial_to_md(tutorial):
                     text = os.path.join(
                         tutorial.get_prod_path(),
                         ext['text'])
-                    ext['txt'] = misc.read_path(text,utf8=False)
+                    ext['txt'] = misc.read_path(text, utf8=False)
                     cpt_e += 1
                 cpt_c += 1
 
@@ -231,7 +232,7 @@ def move(obj, new_pos, position_f, parent_f, children_fn):
     """
     old_pos = getattr(obj, position_f)
     objects = getattr(getattr(obj, parent_f), children_fn)()
-    
+
     # Check that asked new position is correct
     if not 1 <= new_pos <= objects.count():
         raise ValueError('Can\'t move object to position {0}'.format(new_pos))
@@ -256,5 +257,3 @@ def move(obj, new_pos, position_f, parent_f, children_fn):
     # All objects have been updated except the current one we want to move, so
     # we can do it now
     setattr(obj, position_f, new_pos)
-
-

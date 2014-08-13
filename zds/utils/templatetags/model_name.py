@@ -1,8 +1,8 @@
 from django import template
 from zds.search.constants import MODEL_NAMES
- 
+
 register = template.Library()
- 
+
 @register.tag(name="model_name")
 def do_model_name(parser, token):
     try:
@@ -10,7 +10,7 @@ def do_model_name(parser, token):
     except ValueError:
         raise template.TemplateSyntaxError("%r tag requires three arguments" % token.contents.split()[0])
     return ModelNameNode(app_label, model_name, plural)
- 
+
 class ModelNameNode(template.Node):
     def __init__(self, app_label, model_name, plural):
         self.app_label = template.Variable(app_label)

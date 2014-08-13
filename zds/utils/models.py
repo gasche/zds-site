@@ -67,7 +67,7 @@ class Category(models.Model):
             .filter(category__in=[self], is_main=True)\
             .select_related('subcategory')\
             .all()
-        
+
         for catsubcat in catsubcats:
             if catsubcat.subcategory.get_tutos().count() > 0:
                 csc.append(catsubcat)

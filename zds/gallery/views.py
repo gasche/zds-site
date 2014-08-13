@@ -94,7 +94,7 @@ def modify_gallery(request):
 
     if "delete_multi" in request.POST:
         l = request.POST.getlist("items")
-        
+
         # Don't delete gallery when it's link to tutorial
         free_galleries = []
         for g_pk in l:
@@ -103,7 +103,7 @@ def modify_gallery(request):
                 messages.error(request, "La galerie '{}' ne peut pas être supprimée car elle est liée à un tutoriel existant".format(gallery.title))
             else:
                 free_galleries.append(g_pk)
-        
+
         perms = UserGallery.objects.filter(gallery__pk__in=free_galleries,
                                            user=request.user, mode="W").count()
 

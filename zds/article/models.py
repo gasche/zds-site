@@ -158,13 +158,13 @@ class Article(models.Model):
         article_version['sha_public'] = self.sha_public
         article_version['last_read_reaction'] = self.last_read_reaction
         article_version['get_reaction_count'] = self.get_reaction_count
-        article_version['get_absolute_url'] = reverse('zds.article.views.view', 
+        article_version['get_absolute_url'] = reverse('zds.article.views.view',
                                                       args=[self.pk, self.slug])
-        article_version['get_absolute_url_online'] = reverse('zds.article.views.view_online', 
+        article_version['get_absolute_url_online'] = reverse('zds.article.views.view_online',
                                                              args=[self.pk, slugify(article_version['title'])])
-        
+
         return article_version
-        
+
     def dump_json(self, path=None):
         if path is None:
             man_path = os.path.join(self.get_path(), 'manifest.json')
@@ -183,10 +183,10 @@ class Article(models.Model):
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
-        
+
         if has_changed(self, 'image') and self.image:
             old = get_old_field_value(self, 'image', 'objects')
-            
+
             if old is not None and len(old.name) > 0:
                 root = settings.MEDIA_ROOT
                 name = os.path.join(root, old.name)
@@ -225,7 +225,7 @@ class Article(models.Model):
                 .latest('reaction__pubdate').reaction
         except:
             return self.first_reaction()
-    
+
     def first_unread_reaction(self):
         """Return the first reaction the user has unread."""
         try:

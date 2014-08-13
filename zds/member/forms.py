@@ -156,7 +156,7 @@ class RegisterForm(forms.Form):
 
         # Check that the user doesn't exist yet
         username = cleaned_data.get('username')
-        
+
         if username is not None :
             if username.strip() == '':
                 msg = u'Le nom d\'utilisateur ne peut-être vide'

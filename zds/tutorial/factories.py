@@ -2,13 +2,13 @@
 
 from datetime import datetime
 from git.repo import Repo
-try:
-    import ujson as json_reader
-except:
-    try:
-        import simplejson as json_reader
-    except:
-        import json as json_reader
+# try:
+#     import ujson as json_reader
+# except:
+#     try:
+#         import simplejson as json_reader
+#     except:
+#         import json as json_reader
 
 import json as json_writer
 import os
@@ -17,7 +17,7 @@ import factory
 
 from zds.tutorial.models import Tutorial, Part, Chapter, Extract, Note,\
     Validation
-from zds.utils.models import SubCategory 
+from zds.utils.models import SubCategory
 from zds.utils.tutorials import export_tutorial
 
 
@@ -279,6 +279,7 @@ class NoteFactory(factory.DjangoModelFactory):
             tutorial.last_note = note
             tutorial.save()
         return note
+
 
 class SubCategoryFactory(factory.DjangoModelFactory):
     FACTORY_FOR = SubCategory

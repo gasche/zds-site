@@ -73,7 +73,7 @@ class VaidationFactory(factory.DjangoModelFactory):
 
 class LicenceFactory(factory.DjangoModelFactory):
     FACTORY_FOR = Licence
-    
+
     code = u'GNU_GPL'
     title = u'GNU General Public License'
 
@@ -81,4 +81,3 @@ class LicenceFactory(factory.DjangoModelFactory):
     def _prepare(cls, create, **kwargs):
         licence = super(LicenceFactory, cls)._prepare(create, **kwargs)
         return licence
-    

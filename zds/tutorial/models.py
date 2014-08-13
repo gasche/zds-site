@@ -162,7 +162,7 @@ class Tutorial(models.Model):
         return (self.sha_draft is not None) and (self.sha_draft.strip() != '')
 
     def on_line(self):
-        return (self.sha_public is not None) and (self.sha_public.strip() != '') 
+        return (self.sha_public is not None) and (self.sha_public.strip() != '')
 
     def is_mini(self):
         return self.type == 'MINI'
@@ -253,7 +253,7 @@ class Tutorial(models.Model):
         if sha is None:
             sha = self.sha_draft
         repo = Repo(self.get_path())
-        
+
         manifest = get_blob(repo.commit(sha).tree, "manifest.json")
         tutorial_version = json_reader.loads(manifest)
         if "introduction" in tutorial_version:
@@ -273,7 +273,7 @@ class Tutorial(models.Model):
         if sha is None:
             sha = self.sha_draft
         repo = Repo(self.get_path())
-        
+
         manifest = get_blob(repo.commit(sha).tree, "manifest.json")
         tutorial_version = json_reader.loads(manifest)
         if "introduction" in tutorial_version:
@@ -376,12 +376,16 @@ class Tutorial(models.Model):
 
     def have_markdown(self):
         return self.have_format("md")
+
     def have_html(self):
         return self.have_format("html")
+
     def have_pdf(self):
         return self.have_format("pdf")
+
     def have_epub(self):
         return self.have_format("epub")
+
 
 def get_last_tutorials():
     tutorials = Tutorial.objects.all()\
@@ -531,14 +535,14 @@ class Part(models.Model):
         return os.path.join(self.get_prod_path(), basename+'.'+ext)
 
     def get_introduction(self, sha=None):
-        
+
         tutorial = self.tutorial
 
         # find hash code
         if sha is None:
             sha = tutorial.sha_draft
         repo = Repo(tutorial.get_path())
-        
+
         manifest = get_blob(repo.commit(sha).tree, "manifest.json")
         tutorial_version = json_reader.loads(manifest)
         if "parts" in tutorial_version:
@@ -564,7 +568,7 @@ class Part(models.Model):
         if sha is None:
             sha = tutorial.sha_draft
         repo = Repo(tutorial.get_path())
-        
+
         manifest = get_blob(repo.commit(sha).tree, "manifest.json")
         tutorial_version = json_reader.loads(manifest)
         if "parts" in tutorial_version:
@@ -679,7 +683,6 @@ class Chapter(models.Model):
             .filter(chapter__pk=self.pk)\
             .order_by('position_in_chapter')
 
-
     def get_parent(self):
         """Parent structure,
            either tutorial (for mini-tutos) or part (for big-tutos)"""
@@ -709,7 +712,6 @@ class Chapter(models.Model):
                         position += 1
         self.position_in_tutorial = position
 
-
     def get_path(self, relative=False):
         return os.path.join(self.get_parent().get_path(relative),
                             self.get_phy_slug())
@@ -722,7 +724,7 @@ class Chapter(models.Model):
         # find hash code
         if sha is None:
             sha = tutorial.sha_draft
-        
+
         manifest = get_blob(repo.commit(sha).tree, "manifest.json")
         tutorial_version = json_reader.loads(manifest)
         if "parts" in tutorial_version:
@@ -731,7 +733,7 @@ class Chapter(models.Model):
                     for chapter in part["chapters"]:
                         if chapter["pk"] == self.pk:
                             path_chap = chapter["introduction"]
-                            break 
+                            break
         if "chapter" in tutorial_version:
             chapter = tutorial_version["chapter"]
             if chapter["pk"] == self.pk:
@@ -760,7 +762,7 @@ class Chapter(models.Model):
         # find hash code
         if sha is None:
             sha = tutorial.sha_draft
-        
+
         manifest = get_blob(repo.commit(sha).tree, "manifest.json")
         tutorial_version = json_reader.loads(manifest)
         if "parts" in tutorial_version:
@@ -769,7 +771,7 @@ class Chapter(models.Model):
                     for chapter in part["chapters"]:
                         if chapter["pk"] == self.pk:
                             path_chap = chapter["conclusion"]
-                            break 
+                            break
         if "chapter" in tutorial_version:
             chapter = tutorial_version["chapter"]
             if chapter["pk"] == self.pk:
@@ -800,6 +802,7 @@ class Chapter(models.Model):
         for extract in self.get_extracts():
             extract.text = extract.get_path(relative=True)
             extract.save()
+
 
 class Extract(models.Model):
 
@@ -861,7 +864,7 @@ class Extract(models.Model):
         else:
             data = self.chapter.part.tutorial.load_json_for_public()
             mandata = tutorial.load_dic(data)
-            for part in mandata["parts"]:
+            for part in mandata["papart.rts"]:
                 for chapter in part["chapters"]:
                     for ext in chapter["extracts"]:
                         if ext['pk'] == self.pk:
@@ -886,7 +889,7 @@ class Extract(models.Model):
         # find hash code
         if sha is None:
             sha = tutorial.sha_draft
-        
+
         manifest = get_blob(repo.commit(sha).tree, "manifest.json")
         tutorial_version = json_reader.loads(manifest)
         if "parts" in tutorial_version:
@@ -897,7 +900,7 @@ class Extract(models.Model):
                             for extract in chapter["extracts"]:
                                 if extract["pk"] == self.pk:
                                     path_ext = extract["text"]
-                                    break 
+                                    break
         if "chapter" in tutorial_version:
             chapter = tutorial_version["chapter"]
             if "extracts" in chapter:
@@ -919,8 +922,8 @@ class Extract(models.Model):
 
         return misc.read_path(path, utf8=True)
 
-class Validation(models.Model):
 
+class Validation(models.Model):
     """Tutorial validation."""
     class Meta:
         verbose_name = 'Validation'

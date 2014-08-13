@@ -271,17 +271,17 @@ class MemberTests(TestCase):
         self.assertEqual(ban.type, 'Ban Temporaire')
         self.assertEqual(ban.text, 'Texte de test pour BAN TEMP')
         self.assertEquals(len(mail.outbox), 6)
-    
+
     def test_update_password(self):
         """Test the password"""
-        
+
         # create dummy user (to test)
         user = ProfileFactory()
         login_check = self.client.login(
             username=user.user.username,
             password='hostel77')
         self.assertTrue(login_check)
-        
+
         # 1. If passwords don't match
         form_data = {
             'password_old': 'hostel77',
@@ -308,7 +308,7 @@ class MemberTests(TestCase):
         }
         form = ChangePasswordForm(user.user, data=form_data)
         self.assertFalse(form.is_valid())
-        
+
         # 4. If old password is wrong
         form_data = {
             'password_old': 'WrongPassword',
@@ -317,7 +317,7 @@ class MemberTests(TestCase):
         }
         form = ChangePasswordForm(user.user, data=form_data)
         self.assertFalse(form.is_valid())
-        
+
         # 5. If everything is OK
         form_data = {
             'password_old': 'hostel77',
@@ -329,64 +329,63 @@ class MemberTests(TestCase):
 
     def test_update_profil(self):
         """Test the profil update (pseudo, email)"""
-        
+
         # create dummy user (reference)
         user_ref = ProfileFactory()
         login_check = self.client.login(
             username=user_ref.user.username,
             password='hostel77')
         self.assertTrue(login_check)
-        
+
         # create dummy user (to test)
         user = ProfileFactory()
         login_check = self.client.login(
             username=user.user.username,
             password='hostel77')
         self.assertTrue(login_check)
-        
+
         # A. Test email update ----
-        
+
         # A1. If email looks bad
         form_data = {
             'email_new': 'weirdemail@'
         }
         form = ChangeUserForm(data=form_data)
         self.assertFalse(form.is_valid())
-        
+
         # A2. If email is taken
         form_data = {
             'email_new': user_ref.user.email
         }
         form = ChangeUserForm(data=form_data)
         self.assertFalse(form.is_valid())
-        
+
         # A3. If email provider is forbidden
         form_data = {
             'email_new': 'dummy@yopmail.com'
         }
         form = ChangeUserForm(data=form_data)
         self.assertFalse(form.is_valid())
-        
+
         # A4. If OK
         form_data = {
             'email_new': 'okmail@test.com'
         }
         form = ChangeUserForm(data=form_data)
         self.assertTrue(form.is_valid())
-        
+
         # B. t*Test pseudo update ---
-        
+
         # B1. If new pseudo is taken
         form_data = {
             'username_new': user_ref.user.username
         }
         form = ChangeUserForm(data=form_data)
         self.assertFalse(form.is_valid())
-        
+
         # B2. If new pseudo is OK
         form_data = {
             'username_new': 'OriginalPseudo'
         }
         form = ChangeUserForm(data=form_data)
         self.assertTrue(form.is_valid())
-        

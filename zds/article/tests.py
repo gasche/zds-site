@@ -34,7 +34,7 @@ class ArticleTests(TestCase):
         self.user_author = ProfileFactory().user
         self.user = ProfileFactory().user
         self.staff = StaffProfileFactory().user
-        
+
         self.licence = LicenceFactory()
 
         self.article = ArticleFactory()
@@ -397,7 +397,7 @@ class ArticleTests(TestCase):
 
         # change licence (get 302) :
         result = self.client.post(
-            reverse('zds.article.views.edit') + 
+            reverse('zds.article.views.edit') +
                 '?article={}'.format(self.article.pk),
             {
                 'title': self.article.title,
@@ -429,7 +429,7 @@ class ArticleTests(TestCase):
 
         # change licence back to old one (get 302, staff can change licence) :
         result = self.client.post(
-            reverse('zds.article.views.edit') + 
+            reverse('zds.article.views.edit') +
                 '?article={}'.format(self.article.pk),
             {
                 'title': self.article.title,
@@ -455,7 +455,7 @@ class ArticleTests(TestCase):
 
         # change licence (get 302, redirection to login page) :
         result = self.client.post(
-            reverse('zds.article.views.edit') + 
+            reverse('zds.article.views.edit') +
                 '?article={}'.format(self.article.pk),
             {
                 'title': self.article.title,
@@ -471,7 +471,7 @@ class ArticleTests(TestCase):
         article = Article.objects.get(pk=self.article.pk)
         self.assertEqual(article.licence.pk, self.licence.pk)
         self.assertNotEqual(article.licence.pk, new_licence.pk)
-        
+
         # login with random user
         self.assertTrue(
             self.client.login(
@@ -482,7 +482,7 @@ class ArticleTests(TestCase):
         # change licence (get 403, random user cannot edit article if not in
         # authors list) :
         result = self.client.post(
-            reverse('zds.article.views.edit') + 
+            reverse('zds.article.views.edit') +
                 '?article={}'.format(self.article.pk),
             {
                 'title': self.article.title,
