@@ -80,7 +80,8 @@ class PublishableContentManager(models.Manager):
                            .prefetch_related("authors__profile")\
                            .select_related("last_note")\
                            .select_related("public_version")\
-                           .prefetch_related("subcategory")\
+                           .prefetch_related("subcategory") \
+                           .prefetch_related("tags") \
                            .order_by('-public_version__publication_date')[:home_number]
         published = []
         for content in all_contents:
@@ -110,7 +111,8 @@ class PublishableContentManager(models.Manager):
                            .prefetch_related("authors__profile")\
                            .select_related("last_note")\
                            .select_related("public_version")\
-                           .prefetch_related("subcategory")\
+                           .prefetch_related("subcategory") \
+                           .prefetch_related("tags") \
                            .extra(select={"count_note": sub_query})\
                            .order_by('-public_version__publication_date')[:home_number]
         published = []
@@ -129,7 +131,6 @@ class PublishableContentManager(models.Manager):
         :rtype: list
         """
         home_number = settings.ZDS_APP['opinions']['home_number']
-        # TODO : add votes filter when available in this query
         all_contents = self.filter(type="OPINION") \
                            .filter(public_version__isnull=False, sha_approved=F('sha_public')) \
                            .prefetch_related("authors") \
@@ -137,6 +138,7 @@ class PublishableContentManager(models.Manager):
                            .select_related("last_note") \
                            .select_related("public_version") \
                            .prefetch_related("subcategory") \
+                           .prefetch_related("tags") \
                            .order_by('-public_version__publication_date')[:home_number]
         published = []
         for content in all_contents:
